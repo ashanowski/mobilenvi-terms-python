@@ -1,6 +1,5 @@
 import random
-import json
-import datetime
+import requests
 
 class MobileTerminal:
 	
@@ -14,19 +13,23 @@ class MobileTerminal:
 	def info(self):
 		print("======================")
 		print("Stacja {} melduje się!".format(self.id))
+		print("Atrybuty stacji: {}".format(vars(self)))
 		print("Aktualna temperatura: {} C".format(self.temp))
 		print("Aktualne ciśnienie: {} hPa".format(self.pressure))
 		print("======================")
 
-	def save_json(self):
+	def send_data(self):
+		measures = vars(self)
 
-		data = {"id" : self.id,
-				"temp" : self.temp,
-				"pressure" : self.pressure}
+		credentials = {'login' : self.id,
+					   'pass' : "xxxxx"}
 
-		now = datetime.datetime.now()
+		apiUrl = "localhost:8000/api/terminal"
 
-		filename = "term{}_{}.json".format(self.id, now.strftime("%Y-%m-%d_%H-%M"))
+		r = requests.post(apiUrl, args=credentials)
 
-		with open(filename, 'w') as outfile:
-			json.dump(data, outfile)
+		# TODO: wyciągnąć token z r
+		token = 12345
+
+		r = requests.post(apiUrl, data=measures, headers={'Authorization': "Bearer {}"\
+																		   .format(token)})
