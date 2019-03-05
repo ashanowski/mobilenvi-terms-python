@@ -7,10 +7,13 @@ class MobileTerminal:
 		self.id = id
 
 	def get_data(self):
+		""" Gather data from a station """
+
 		self.temp = int(random.normalvariate(16, 5))
 		self.pressure = int(random.normalvariate(1011, 15))
 
 	def info(self):
+		""" Print info about station """
 		print("======================")
 		print("Stacja {} melduje się!".format(self.id))
 		print("Atrybuty stacji: {}".format(vars(self)))
@@ -18,18 +21,49 @@ class MobileTerminal:
 		print("Aktualne ciśnienie: {} hPa".format(self.pressure))
 		print("======================")
 
-	def send_data(self):
-		measures = vars(self)
+	def send_data(self, show_info=False):
+		"""	Send data gathered by simulated station 
+			
+			Args:
+				show_info : Boolean
+					Print station's info to console
+		"""
 
-		credentials = {'login' : self.id,
-					   'pass' : "xxxxx"}
+		if show_info:
+			self.info()
 
-		apiUrl = "localhost:8000/api/terminal"
+		# data gathered by station
+		measurements = {
+			"temperature": self.temp,
+			"pressure": self.pressure
+		}
 
-		r = requests.post(apiUrl, args=credentials)
+		# Login and send apis urls
+		apiLoginUrl = "http://127.0.0.1:8000/api/station/login"
+		apiSendUrl = "http://127.0.0.1:8000/api/station/send"
 
-		# TODO: wyciągnąć token z r
-		token = 12345
+		print("Preparing to login...")	
+		# send station's id with POST
+		credentials = {"id": self.id}
+		try:
+			rlogin = requests.post(apiLoginUrl, data=credentials)
+		except requests.exceptions.InvalidSchema:
+			print("Failed! Check Login API URL.")
+		except requests.exceptions.ConnectionError:
+			print("Failed! Check Login API URL.")
+		else:
+			print("Login ended with success. JWT Token acquired!")
 
-		r = requests.post(apiUrl, data=measures, headers={'Authorization': "Bearer {}"\
-																		   .format(token)})
+			print("Preparing to send station's data...")
+			# grab jwt token
+			token = rlogin.json()["token"]
+
+			# send station's data and jwt token in header
+			header = {"Authorization": "Bearer {}".format(token)}
+
+			try:
+				rsend = requests.post(apiSendUrl, headers=header, data=measurements)
+			except requests.exceptions.ConnectionError:
+				print("Failed! Check Send API URL.")
+			else:
+				print("Data successfully sent to server!")

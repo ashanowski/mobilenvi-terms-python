@@ -1,20 +1,14 @@
 from MobileTerminal import MobileTerminal
 import time
+import schedule
 
 if __name__ == "__main__":
-
 	mt1 = MobileTerminal(1)
-	mt1.get_data()
-
-	mt2 = MobileTerminal(2)
-	mt2.get_data()
-	
 	def job1():
 		mt1.get_data()
-		mt1.info()
-
-	def job2():
-		mt2.get_data()
-		mt2.info()
+		mt1.send_data(show_info=True)
 	
-	mt1.info()
+	schedule.every(5).seconds.do(job1)
+
+	while True:
+		schedule.run_pending()
