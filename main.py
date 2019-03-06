@@ -1,14 +1,24 @@
 from MobileTerminal import MobileTerminal
 import time
 import schedule
+import requests
 
 if __name__ == "__main__":
-	mt1 = MobileTerminal(1)
-	def job1():
-		mt1.get_data()
-		mt1.send_data(show_info=True)
+
+	apiGetIdUrl = "http://127.0.0.1:8000/api/station/list"
 	
-	schedule.every(5).seconds.do(job1)
+	id_request = requests.get(apiGetIdUrl)
+	idList = id_request.json()["stations"]
+
+	stations = {id: MobileTerminal(id) for id in idList}
+
+	def job():
+		for id in stations:
+			stations[id].get_data()
+			stations[id].send_data()
+	
+
+	schedule.every(5).seconds.do(job)
 
 	while True:
 		schedule.run_pending()

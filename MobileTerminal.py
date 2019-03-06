@@ -1,5 +1,6 @@
 import random
 import requests
+import json
 
 class MobileTerminal:
 	
@@ -42,21 +43,24 @@ class MobileTerminal:
 		apiLoginUrl = "http://127.0.0.1:8000/api/station/login"
 		apiSendUrl = "http://127.0.0.1:8000/api/station/send"
 
-		print("Preparing to login...")	
+		print("Station {}: Preparing to login...".format(self.id))
 		# send station's id with POST
 		credentials = {"id": self.id}
 		try:
 			rlogin = requests.post(apiLoginUrl, data=credentials)
-		except requests.exceptions.InvalidSchema:
-			print("Failed! Check Login API URL.")
-		except requests.exceptions.ConnectionError:
-			print("Failed! Check Login API URL.")
-		else:
-			print("Login ended with success. JWT Token acquired!")
-
-			print("Preparing to send station's data...")
-			# grab jwt token
 			token = rlogin.json()["token"]
+		except requests.exceptions.InvalidSchema:
+			print("Station {}: Failed! Check Login API URL.".format(self.id))
+		except requests.exceptions.ConnectionError:
+			print("Station {}: Failed! Check Login API URL.".format(self.id))
+		except json.decoder.JSONDecodeError:
+			error = "Station {}: Failed! Station hasn't been authorized. It may not be in database.".format(self.id)
+			print(error)
+			return error
+		else:
+			print("Station {}: Login ended with success. JWT Token acquired!".format(self.id))
+
+			print("Station {}: Preparing to send station's data...".format(self.id))
 
 			# send station's data and jwt token in header
 			header = {"Authorization": "Bearer {}".format(token)}
@@ -64,6 +68,6 @@ class MobileTerminal:
 			try:
 				rsend = requests.post(apiSendUrl, headers=header, data=measurements)
 			except requests.exceptions.ConnectionError:
-				print("Failed! Check Send API URL.")
+				print("Station {}: Failed! Check Send API URL.".format(self.id))
 			else:
-				print("Data successfully sent to server!")
+				print("Station {}: Data successfully sent to server!".format(self.id))
