@@ -5,6 +5,3 @@ Dependencies:
     requests
 
 pip install -r requirements.txt
-
-TODO:
-    integrate more than one station
