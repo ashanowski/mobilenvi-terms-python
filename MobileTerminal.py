@@ -2,8 +2,9 @@ import random
 import requests
 import json
 
+
 class MobileTerminal:
-	
+
 	def __init__(self, id: int):
 		self.id = id
 
@@ -23,8 +24,8 @@ class MobileTerminal:
 		print("======================")
 
 	def send_data(self, show_info=False):
-		"""	Send data gathered by simulated station 
-			
+		"""	Send data gathered by simulated station
+
 			Args:
 				show_info : Boolean
 					Print station's info to console
@@ -40,8 +41,9 @@ class MobileTerminal:
 		}
 
 		# Login and send apis urls
-		apiLoginUrl = "http://127.0.0.1:8000/api/station/login"
-		apiSendUrl = "http://127.0.0.1:8000/api/station/send"
+		base_url = "http://192.168.43.10:8000"
+		apiLoginUrl = base_url + "/api/station/login"
+		apiSendUrl = base_url + "/api/station/send"
 
 		print("Station {}: Preparing to login...".format(self.id))
 		# send station's id with POST
