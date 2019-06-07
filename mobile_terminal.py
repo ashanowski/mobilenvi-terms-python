@@ -7,9 +7,12 @@
 import json
 import logging
 import requests
-import board
-import busio
-import adafruit_bme280
+try:
+    import board
+    import busio
+    import adafruit_bme280
+except NotImplementedError:
+    logging.error('Application needs to be run on a Raspberry Pi!')
 
 
 class MobileTerminal:
@@ -30,16 +33,6 @@ class MobileTerminal:
 
             pressure : float
                 Pressure gathered by BME280 sensor
-
-
-        Methods
-        -------
-            get_data(temp_precision, pressure_precision)
-                Gather data from the sensor
-
-            send_data(show_info)
-                Send data gathered by terminal's sensor to the external server
-
     """
 
     def __init__(self, terminal_id: int):
