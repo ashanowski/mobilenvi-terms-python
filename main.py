@@ -1,12 +1,15 @@
-from MobileTerminal import MobileTerminal
-import time
-import requests
+"""
+    Main script creating instance of a terminal
+    and using its functions
+
+"""
+from time import sleep
+from mobile_terminal import MobileTerminal
+
 
 if __name__ == "__main__":
-
-    station = MobileTerminal(14)
+    STATION = MobileTerminal(14)
     while True:
-        station.get_data()
-        station.send_data()
-
-        sleep(5)
+        STATION.get_data()
+        STATION.send_data()
+        sleep(30 * 60)
