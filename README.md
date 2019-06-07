@@ -11,4 +11,4 @@ Mobilenvi is my university assignment project which integrates Raspberry Pi with
 Currently the documentation is only availaible through inside-code docstrings.
 
 ## Usage
-Clone the repository to Raspberry Pi with BME280 connected through I2C at address 0x76. Application works only for given API architecture, laying on the server side.
+Clone the repository to Raspberry Pi with BME280 connected through I2C at address 0x76. Application works only for given API architecture, strictly depending on the server side.
