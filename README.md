@@ -1,7 +1,7 @@
 # Mobilenvi - Mobile terminals powered by Raspberry Pi and Python
 
 ## About project
-Mobilenvi is my university assignment project which integrates Raspberry Pi with our little, custom-made Internet of Things system. Data flows from Adafruit BME280 sensor to the [server written in Laravel](https://github.com/SztukowskiAdam/Mobilenvi-server) and then to the [client app written in Angular](https://github.com/SztukowskiAdam/Mobilenvi-client).
+Mobilenvi is a university assignment project which integrates Raspberry Pi with our little, custom-made Internet of Things system. Data flows from Adafruit BME280 sensor to the [server written in Laravel](https://github.com/SztukowskiAdam/Mobilenvi-server) and then to the [client app written in Angular](https://github.com/SztukowskiAdam/Mobilenvi-client).
 
 ## Modules
 * [requests](https://2.python-requests.org/en/master/) for HTTP GET and POST, being more readable than urllib3
