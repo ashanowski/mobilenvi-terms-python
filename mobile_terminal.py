@@ -81,7 +81,7 @@ class MobileTerminal:
             'pressure': self.pressure
         }
 
-        base_url = 'http://192.168.43.10:8000'
+        base_url = 'http://192.168.43.10:81'
         api_login_url = base_url + '/api/station/login'
         api_send_url = base_url + '/api/station/send'
 
@@ -89,10 +89,7 @@ class MobileTerminal:
         credentials = {'terminal_id': self.terminal_id}
         try:
             login_request = requests.post(api_login_url, data=credentials)
-            token = login_request.json()['token']
-        except requests.exceptions.Invalterminal_idSchema:
-            logging.error('Station %s: Failed! Check Login API URL.',
-                          self.terminal_id)
+            token = login_request.json()["token"]
         except requests.exceptions.ConnectionError:
             logging.error('Station %s: Failed! Check Login API URL.',
                           self.terminal_id)
