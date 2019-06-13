@@ -13,6 +13,7 @@ try:
     import adafruit_bme280
 except NotImplementedError:
     logging.error('Application needs to be run on a Raspberry Pi!')
+logging.getLogger().setLevel(logging.INFO)
 
 
 class MobileTerminal:
@@ -86,7 +87,7 @@ class MobileTerminal:
         api_send_url = base_url + '/api/station/send'
 
         logging.info('Station %s: Preparing to login...', self.terminal_id)
-        credentials = {'terminal_id': self.terminal_id}
+        credentials = {'id': self.terminal_id}
         try:
             login_request = requests.post(api_login_url, data=credentials)
             token = login_request.json()["token"]
